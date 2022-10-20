@@ -1,3 +1,7 @@
+function callTest() {
+  console.log(country.value);
+}
+
 // variable declarations
 
 const form = document.querySelector('form');
@@ -10,6 +14,7 @@ const countryError = document.querySelector('#country + span.error');
 
 const postalCode = document.getElementById('postal-code');
 const postalCodeError = document.querySelector('#postal-code + span.error');
+const regEx = /[a-zA-Z][0-9][a-zA-Z](-| |)[0-9][a-zA-Z][0-9]/;
 
 const password = document.getElementById('password');
 const passwordError = document.querySelector('#password + span.error');
@@ -30,6 +35,9 @@ form.addEventListener('submit', (event) => {
   } else if (country.value == '' || country.value == '-------') {
     // if option ios blank or default
     showCountryError();
+    event.preventDefault();
+  } else if (!regEx.test(postalCode.value) || postalCode.value == '') {
+    showPostalCodeError();
     event.preventDefault();
   }
 });
@@ -84,6 +92,23 @@ function showCountryError() {
   countryError.className = 'error active';
 }
 
-function callTest() {
-  console.log(country.value);
+//postal - zip code validation
+postalCode.addEventListener('input', (event) => {
+  if (regEx.test(postalCode.value)) {
+    postalCodeError.textContent = ''; // reset the content of the message
+    postalCodeError.className = 'error'; // reset the visual state of the message
+  } else {
+    // if there is still an error, show the correct error
+    showPostalCodeError();
+  }
+});
+
+function showPostalCodeError() {
+  if (postalCode.value == '') {
+    postalCodeError.textContent = 'Please provide a Postal Code';
+  } else if (!regEx.test(postalCode.value)) {
+    postalCodeError.textContent = 'Please provide a valid Postal Code';
+  }
+
+  postalCodeError.className = 'error active';
 }
