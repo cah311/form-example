@@ -15,9 +15,9 @@
       </div>
       <div class="input-sections">
         <label for="country">Country</label>
-        <input list="country" name="country" required />
-        <datalist id="country" name="country">
-          <option>-------</option>
+        <input id="country-input" list="country" name="country" required />
+        <datalist id="country" name="country" required>
+          <option value="-------"></option>
           <option value="Afghanistan">Afghanistan</option>
           <option value="Aland Islands">Aland Islands</option>
           <option value="Albania">Albania</option>
@@ -340,6 +340,8 @@
         <button>Submit</button>
       </div>
     </form>
+
+    <button onclick="callCountry()">Test</button>
 
     <script src="script.js"></script>
   </body>

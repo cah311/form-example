@@ -5,7 +5,7 @@ const form = document.querySelector('form');
 const email = document.getElementById('email');
 const emailError = document.querySelector('#email + span.error');
 
-const country = document.getElementById('country');
+const country = document.getElementById('country-input');
 const countryError = document.querySelector('#country + span.error');
 
 const postalCode = document.getElementById('postal-code');
@@ -19,8 +19,7 @@ const confirmPasswordError = document.querySelector(
   '#confirm-password + span.error'
 );
 
-// email validity testing
-
+// form submition testing
 form.addEventListener('submit', (event) => {
   // if the email field is valid, let the form submit
   if (!email.validity.valid) {
@@ -28,8 +27,14 @@ form.addEventListener('submit', (event) => {
     showEmailError();
     // prevent the form from being sent while invalid
     event.preventDefault();
+  } else if (country.value == '' || country.value == '-------') {
+    // if option ios blank or default
+    showCountryError();
+    event.preventDefault();
   }
 });
+
+// email validity testing
 
 email.addEventListener('input', (event) => {
   // check validity each time user types somthing
@@ -55,4 +60,30 @@ function showEmailError() {
 
   // set appropriate styling
   emailError.className = 'error active';
+}
+
+// country validity testing
+
+country.addEventListener('input', (event) => {
+  if (country.validity.valid) {
+    countryError.textContent = '';
+    countryError.className = 'error';
+  } else {
+    showCountryError();
+  }
+});
+
+function showCountryError() {
+  if (country.value === '') {
+    countryError.textContent = 'Please choose a country from the list';
+  } else if (country.value === '-------') {
+    countryError.textContent =
+      'Please choose one of the countries from the list';
+  }
+
+  countryError.className = 'error active';
+}
+
+function callTest() {
+  console.log(country.value);
 }
