@@ -14,10 +14,12 @@ const countryError = document.querySelector('#country + span.error');
 
 const postalCode = document.getElementById('postal-code');
 const postalCodeError = document.querySelector('#postal-code + span.error');
-const regEx = /[a-zA-Z][0-9][a-zA-Z](-| |)[0-9][a-zA-Z][0-9]/;
+const postalRegEx = /[a-zA-Z][0-9][a-zA-Z](-| |)[0-9][a-zA-Z][0-9]/;
 
 const password = document.getElementById('password');
 const passwordError = document.querySelector('#password + span.error');
+const passRegEx =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const confirmPassword = document.getElementById('confirm-password');
 const confirmPasswordError = document.querySelector(
@@ -36,8 +38,11 @@ form.addEventListener('submit', (event) => {
     // if option ios blank or default
     showCountryError();
     event.preventDefault();
-  } else if (!regEx.test(postalCode.value) || postalCode.value == '') {
+  } else if (!postalRegEx.test(postalCode.value) || postalCode.value == '') {
     showPostalCodeError();
+    event.preventDefault();
+  } else if (!passRegEx.test(password.value) || password.value == '') {
+    showPasswordError();
     event.preventDefault();
   }
 });
@@ -92,9 +97,9 @@ function showCountryError() {
   countryError.className = 'error active';
 }
 
-//postal - zip code validation
+//postal code validation
 postalCode.addEventListener('input', (event) => {
-  if (regEx.test(postalCode.value)) {
+  if (postalRegEx.test(postalCode.value)) {
     postalCodeError.textContent = ''; // reset the content of the message
     postalCodeError.className = 'error'; // reset the visual state of the message
   } else {
@@ -106,9 +111,30 @@ postalCode.addEventListener('input', (event) => {
 function showPostalCodeError() {
   if (postalCode.value == '') {
     postalCodeError.textContent = 'Please provide a Postal Code';
-  } else if (!regEx.test(postalCode.value)) {
+  } else if (!postalRegEx.test(postalCode.value)) {
     postalCodeError.textContent = 'Please provide a valid Postal Code';
   }
 
   postalCodeError.className = 'error active';
+}
+
+// password validation
+password.addEventListener('input', (event) => {
+  if (passRegEx.test(password.value)) {
+    passwordError.textContent = '';
+    passwordError.className = 'error';
+  } else {
+    showPasswordError();
+  }
+});
+
+function showPasswordError() {
+  if (password.value == '') {
+    passwordError.textContent = 'Please enter your password';
+  } else if (!passRegEx.test(password.value)) {
+    passwordError.textContent =
+      'Password must be min 8 characters, have 1 uppercase, one number, and one special character';
+  }
+
+  passwordError.className = 'error active';
 }
