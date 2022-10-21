@@ -1,7 +1,3 @@
-function callTest() {
-  console.log(country.value);
-}
-
 // variable declarations
 
 const form = document.querySelector('form');
@@ -43,6 +39,12 @@ form.addEventListener('submit', (event) => {
     event.preventDefault();
   } else if (!passRegEx.test(password.value) || password.value == '') {
     showPasswordError();
+    event.preventDefault();
+  } else if (
+    confirmPassword.value !== password.value ||
+    confirmPassword.value == ''
+  ) {
+    showConfirmPasswordError();
     event.preventDefault();
   }
 });
@@ -137,4 +139,25 @@ function showPasswordError() {
   }
 
   passwordError.className = 'error active';
+}
+
+// confirm password validation
+
+confirmPassword.addEventListener('input', (event) => {
+  if (confirmPassword.value === password.value) {
+    confirmPasswordError.textContent = '';
+    confirmPasswordError.className = 'error';
+  } else {
+    showConfirmPasswordError();
+  }
+});
+
+function showConfirmPasswordError() {
+  if (confirmPassword.value == '') {
+    confirmPasswordError.textContent = 'Please confirm your password';
+  } else if (confirmPasswordError.value !== password.value) {
+    confirmPasswordError.textContent = 'Your passwords do not match';
+  }
+
+  confirmPasswordError.className = 'error active';
 }
